@@ -1,8 +1,10 @@
 #pragma once
-#include "TablaGrafos.h"
 #include "Grafo.h"
-#include <stack>
 #include <vector>
-#include <sstream>;
+#include <pair>
 
+using namespace std;
 
+vector <int> dijkstra(Grafo& grafo, int fuente);
+
+std::string RutaMasCortaA(Grafo& grafo, int destino, vector<int> padre);
