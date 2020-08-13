@@ -40,3 +40,25 @@ vector<pair<int, int> > Prim(Grafo& grafo)
 	}
 	return res;
 }
+
+std::string RutaMasCortaA(Grafo& grafo, int destino)
+{
+	stringstream res;
+	vector<pair<int, int> > Prim(grafo);
+
+	while (padre[destino] != -1) {
+
+		pasos.push_back(destino);
+		destino = padre[destino];
+	}
+
+	reverse(pasos.begin(), pasos.end());
+	res << grafo.Vertices[destino].Nombre;
+
+	for (auto i : pasos) {
+
+		res << " -> " << grafo.Vertices[i].Nombre;
+	}
+
+	return res.str;
+}
