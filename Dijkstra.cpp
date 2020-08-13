@@ -1,56 +1,69 @@
 #include "Dijkstra.h"
+#include <priority_queue>
+#include <iostream>
+#include <sstream>
+#include <algorithm>
 
 
-void Dijkstra::Inicializar(Grafo& grafo, int fuente)
+using namespace std;
+
+typedef pair<double, int> di;
+typedef pair<int, int> ii;
+
+vector<int> dijkstra(Grafo& grafo, int fuente)
 {
-	for (Vertice ver : Vertices) {
-		if(ver.Id != fuente){
-			Tabla.emplace_back(false, TablaGrafos::ValorDistanciaInfinita, TablaGrafos::ValorVacio(), ver.Id, ver.Vecinos);
-		}
-		else {
-			Tabla.emplace_back(false, 0, TablaGrafos::ValorVacio(), fuente, ver.Vecinos);
-		}
-	}
-}
 
-void Dijkstra::Ejecutar(Grafo& grafo, int fuente)
-{
-	Inicializar(grafo, fuente);
-	for (TablaGrafos ver : Tabla) {
-		if (ver.Id == fuente) {
-			ver.Visitado = true;
-			ver.Anterior = NULL;
-			for (Arista ari : ver.Adyacente) {
-				if ()
-				{
+	vector<double> distancia(grafo.NumeroVertices, 1e12);
+	vector<int> padre(grafo.NumeroVertices, -1);
+	priority_queue < pair <double, int>, vector< pair <double, int> >, greater < pair <double, int> > > q;
+	vector<bool> seen(grafo.NumeroVertices, false);
+	q.push(di(0, fuente));
+	distancia[fuente] = 0;
 
-				}
+	while (q.size()) {
+
+		di actual = q.top(); q.pop();
+		int nodoActual = actual.second;
+
+		seen[nodoActual] = true;
+
+		for (auto i : grafo.Vertices[nodoActual].Vecinos) {
+
+			int vecino = i.VerticeAdyacente;
+			double distanciaNueva = distancia[nodoActual] + i.Tiempo;
+
+			if (distancia[vecino] > distanciaNueva) {
+
+				distancia[vecino] = distanciaNueva;
+				q.push(di(distanciaNueva, vecino));
+				padre[vecino] = nodoActual;
+
 			}
 		}
 	}
-
-	// ver https://docs.google.com/presentation/d/1rQUVSyaPVH2wMr4b_5EBHQ5BGrf8sJ1h/edit#slide=id.p187
+	return padre;
 }
 
-int Dijkstra::EncontrarMinimioSinVisitar(  )
+
+
+std::string RutaMasCortaA(Grafo& grafo, int destino, vector<int> padre)
 {
-	// ver https://docs.google.com/presentation/d/1rQUVSyaPVH2wMr4b_5EBHQ5BGrf8sJ1h/edit#slide=id.p187
+	stringstream res;
+	vector<int> pasos;
 
-	//Esta es la parte de "Encontramos vértice v sin visitar con la  minima distancia"
-}
+	while (padre[destino] != -1) {
 
-std::string Dijkstra::RutaMasCortaA(Grafo& grafo,int destino)
-{
+		pasos.push_back(destino);
+		destino = padre[destino];
+	}
 
+	reverse(pasos.begin(), pasos.end());
+	res << grafo.Vertices[destino].Nombre;
 
-	std::stringstream ss;
-	
-	// https://docs.google.com/presentation/d/1rQUVSyaPVH2wMr4b_5EBHQ5BGrf8sJ1h/edit#slide=id.p234
+	for (auto i : pasos) {
 
-	// vean la tabla. tienen que comenzar del destino,
-	// e "ir hacia atras" hasta que lleguen a la fuente.
-	// debe imprimirse en orden (es decir, Fuente, vertice1, vertice2, ... destino)
+		res << " -> " << grafo.Vertices[i].Nombre;
+	}
 
-
-	return ss.str();
+	return res.str;
 }

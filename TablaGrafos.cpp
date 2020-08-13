@@ -6,7 +6,17 @@ TablaGrafos::TablaGrafos(bool visitado, int distancia, int anterior, int id, std
 	Distancia = distancia;
 	Anterior = anterior;
 	Id = id;
-	Adyacente = adyacente
+	Adyacente = adyacente;
+}
+
+void TablaGrafos::PilaPrioridad(bool visitado, int distancia, int anterior, int id, double latitud, double longitud)
+{
+	Visitado = visitado;
+	Distancia = distancia;
+	Anterior = anterior;
+	Id = id;
+	Latitud = latitud;
+	Longitud = longitud;
 }
 
 bool TablaGrafos::AnteriorVacio()
